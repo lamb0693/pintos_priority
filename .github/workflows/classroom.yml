@@ -1,0 +1,248 @@
+name: Autograding Tests
+'on':
+- workflow_dispatch
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: build
+      id: build
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: build
+        setup-command: sudo apt install -y qemu-system-x86
+        command: cd threads; make
+        timeout: 10
+    - name: mlfqs-load-1
+      id: mlfqs-load-1
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: mlfqs-load-1
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh mlfqs-load-1
+        timeout: 10
+        max-score: 5
+    - name: alarm-multiple
+      id: alarm-multiple
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: alarm-multiple
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh alarm-multiple
+        timeout: 10
+        max-score: 6
+    - name: alarm-simultaneous
+      id: alarm-simultaneous
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: alarm-simultaneous
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh alarm-simultaneous
+        timeout: 10
+        max-score: 6
+    - name: alarm-priority
+      id: alarm-priority
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: alarm-priority
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh alarm-priority
+        timeout: 10
+        max-score: 6
+    - name: alarm-zero
+      id: alarm-zero
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: alarm-zero
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh
+        timeout: 10
+        max-score: 3
+    - name: alarm-negative
+      id: alarm-negative
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: alarm-negative
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh
+        timeout: 10
+        max-score: 3
+    - name: priority-change
+      id: priority-change
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: priority-change
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh
+        timeout: 10
+        max-score: 6
+    - name: priority-preempt
+      id: priority-preempt
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: priority-preempt
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh
+        timeout: 10
+        max-score: 6
+    - name: priority-fifo
+      id: priority-fifo
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: priority-fifo
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh priority-fifo
+        timeout: 10
+        max-score: 6
+    - name: priority-sema
+      id: priority-sema
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: priority-sema
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh priority-sema
+        timeout: 10
+        max-score: 6
+    - name: priority-condvar
+      id: priority-condvar
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: priority-condvar
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh priority-condvar
+        timeout: 10
+        max-score: 6
+    - name: mlfqs-load-1
+      id: mlfqs-load-1
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: mlfqs-load-1
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh mlfqs-load-1
+        timeout: 10
+        max-score: 5
+    - name: mlfqs-load-60
+      id: mlfqs-load-60
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: mlfqs-load-60
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh mlfqs-load-60
+        timeout: 10
+        max-score: 5
+    - name: mlfqs-load-avg
+      id: mlfqs-load-avg
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: mlfqs-load-avg
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh
+        timeout: 10
+        max-score: 5
+    - name: mlfqs-recent-1
+      id: mlfqs-recent-1
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: mlfqs-recent-1
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh
+        timeout: 10
+        max-score: 5
+    - name: mlfqs-fair-2
+      id: mlfqs-fair-2
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: mlfqs-fair-2
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh mlfqs-fair-2
+        timeout: 10
+        max-score: 3
+    - name: mlfqs-fair-20
+      id: mlfqs-fair-20
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: mlfqs-fair-20
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh mlfqs-fair-20
+        timeout: 10
+        max-score: 3
+    - name: mlfqs-nice-2
+      id: mlfqs-nice-2
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: mlfqs-nice-2
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh mlfqs-nice-2
+        timeout: 10
+        max-score: 5
+    - name: mlfqs-nice-10
+      id: mlfqs-nice-10
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: mlfqs-nice-10
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh mlfqs-nice-10
+        timeout: 10
+        max-score: 4
+    - name: mlfqs-block
+      id: mlfqs-block
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: mlfqs-block
+        setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
+          p1-test; rm -rf tests; cp -r p1-test/tests tests
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh mlfqs-block
+        timeout: 10
+        max-score: 5
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        BUILD_RESULTS: "${{steps.build.outputs.result}}"
+        MLFQS-LOAD-1_RESULTS: "${{steps.mlfqs-load-1.outputs.result}}"
+        ALARM-MULTIPLE_RESULTS: "${{steps.alarm-multiple.outputs.result}}"
+        ALARM-SIMULTANEOUS_RESULTS: "${{steps.alarm-simultaneous.outputs.result}}"
+        ALARM-PRIORITY_RESULTS: "${{steps.alarm-priority.outputs.result}}"
+        ALARM-ZERO_RESULTS: "${{steps.alarm-zero.outputs.result}}"
+        ALARM-NEGATIVE_RESULTS: "${{steps.alarm-negative.outputs.result}}"
+        PRIORITY-CHANGE_RESULTS: "${{steps.priority-change.outputs.result}}"
+        PRIORITY-PREEMPT_RESULTS: "${{steps.priority-preempt.outputs.result}}"
+        PRIORITY-FIFO_RESULTS: "${{steps.priority-fifo.outputs.result}}"
+        PRIORITY-SEMA_RESULTS: "${{steps.priority-sema.outputs.result}}"
+        PRIORITY-CONDVAR_RESULTS: "${{steps.priority-condvar.outputs.result}}"
+        MLFQS-LOAD-60_RESULTS: "${{steps.mlfqs-load-60.outputs.result}}"
+        MLFQS-LOAD-AVG_RESULTS: "${{steps.mlfqs-load-avg.outputs.result}}"
+        MLFQS-RECENT-1_RESULTS: "${{steps.mlfqs-recent-1.outputs.result}}"
+        MLFQS-FAIR-2_RESULTS: "${{steps.mlfqs-fair-2.outputs.result}}"
+        MLFQS-FAIR-20_RESULTS: "${{steps.mlfqs-fair-20.outputs.result}}"
+        MLFQS-NICE-2_RESULTS: "${{steps.mlfqs-nice-2.outputs.result}}"
+        MLFQS-NICE-10_RESULTS: "${{steps.mlfqs-nice-10.outputs.result}}"
+        MLFQS-BLOCK_RESULTS: "${{steps.mlfqs-block.outputs.result}}"
+      with:
+        runners: build,mlfqs-load-1,alarm-multiple,alarm-simultaneous,alarm-priority,alarm-zero,alarm-negative,priority-change,priority-preempt,priority-fifo,priority-sema,priority-condvar,mlfqs-load-1,mlfqs-load-60,mlfqs-load-avg,mlfqs-recent-1,mlfqs-fair-2,mlfqs-fair-20,mlfqs-nice-2,mlfqs-nice-10,mlfqs-block
