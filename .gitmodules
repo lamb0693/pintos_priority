@@ -1,0 +1,4 @@
+[submodule ".p1-test"]
+	path = .p1-test
+	url = https://github.com/KNU-COMP312/p1-test.git
+  branch = main
