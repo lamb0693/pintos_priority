@@ -21,16 +21,16 @@ jobs:
         setup-command: sudo apt install -y qemu-system-x86
         command: cd threads; make
         timeout: 10
-    - name: mlfqs-load-1
-      id: mlfqs-load-1
+    - name: alarm-single
+      id: alarm-single
       uses: classroom-resources/autograding-command-grader@v1
       with:
-        test-name: mlfqs-load-1
+        test-name: alarm-single
         setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
           p1-test; rm -rf tests; cp -r p1-test/tests tests
-        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh mlfqs-load-1
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh alarm-single
         timeout: 10
-        max-score: 5
+        max-score: 6
     - name: alarm-multiple
       id: alarm-multiple
       uses: classroom-resources/autograding-command-grader@v1
@@ -68,7 +68,7 @@ jobs:
         test-name: alarm-zero
         setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
           p1-test; rm -rf tests; cp -r p1-test/tests tests
-        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh alarm-zero
         timeout: 10
         max-score: 3
     - name: alarm-negative
@@ -78,7 +78,7 @@ jobs:
         test-name: alarm-negative
         setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
           p1-test; rm -rf tests; cp -r p1-test/tests tests
-        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh alarm-negative
         timeout: 10
         max-score: 3
     - name: priority-change
@@ -88,7 +88,7 @@ jobs:
         test-name: priority-change
         setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
           p1-test; rm -rf tests; cp -r p1-test/tests tests
-        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh priority-change
         timeout: 10
         max-score: 6
     - name: priority-preempt
@@ -98,7 +98,7 @@ jobs:
         test-name: priority-preempt
         setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
           p1-test; rm -rf tests; cp -r p1-test/tests tests
-        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh priority-preempt
         timeout: 10
         max-score: 6
     - name: priority-fifo
@@ -158,7 +158,7 @@ jobs:
         test-name: mlfqs-load-avg
         setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
           p1-test; rm -rf tests; cp -r p1-test/tests tests
-        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh mlfqs-load-avg
         timeout: 10
         max-score: 5
     - name: mlfqs-recent-1
@@ -168,7 +168,7 @@ jobs:
         test-name: mlfqs-recent-1
         setup-command: git pull; rm -rf p1-test; git clone https://github.com/KNU-COMP312/p1-test.git
           p1-test; rm -rf tests; cp -r p1-test/tests tests
-        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh
+        command: PINTOS_HOME="$(pwd)" bash p1-test/check.sh mlfqs-recent-1
         timeout: 10
         max-score: 5
     - name: mlfqs-fair-2
@@ -225,7 +225,7 @@ jobs:
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
         BUILD_RESULTS: "${{steps.build.outputs.result}}"
-        MLFQS-LOAD-1_RESULTS: "${{steps.mlfqs-load-1.outputs.result}}"
+        ALARM-SINGLE_RESULTS: "${{steps.alarm-single.outputs.result}}"
         ALARM-MULTIPLE_RESULTS: "${{steps.alarm-multiple.outputs.result}}"
         ALARM-SIMULTANEOUS_RESULTS: "${{steps.alarm-simultaneous.outputs.result}}"
         ALARM-PRIORITY_RESULTS: "${{steps.alarm-priority.outputs.result}}"
@@ -236,6 +236,7 @@ jobs:
         PRIORITY-FIFO_RESULTS: "${{steps.priority-fifo.outputs.result}}"
         PRIORITY-SEMA_RESULTS: "${{steps.priority-sema.outputs.result}}"
         PRIORITY-CONDVAR_RESULTS: "${{steps.priority-condvar.outputs.result}}"
+        MLFQS-LOAD-1_RESULTS: "${{steps.mlfqs-load-1.outputs.result}}"
         MLFQS-LOAD-60_RESULTS: "${{steps.mlfqs-load-60.outputs.result}}"
         MLFQS-LOAD-AVG_RESULTS: "${{steps.mlfqs-load-avg.outputs.result}}"
         MLFQS-RECENT-1_RESULTS: "${{steps.mlfqs-recent-1.outputs.result}}"
@@ -245,4 +246,4 @@ jobs:
         MLFQS-NICE-10_RESULTS: "${{steps.mlfqs-nice-10.outputs.result}}"
         MLFQS-BLOCK_RESULTS: "${{steps.mlfqs-block.outputs.result}}"
       with:
-        runners: build,mlfqs-load-1,alarm-multiple,alarm-simultaneous,alarm-priority,alarm-zero,alarm-negative,priority-change,priority-preempt,priority-fifo,priority-sema,priority-condvar,mlfqs-load-1,mlfqs-load-60,mlfqs-load-avg,mlfqs-recent-1,mlfqs-fair-2,mlfqs-fair-20,mlfqs-nice-2,mlfqs-nice-10,mlfqs-block
+        runners: build,alarm-single,alarm-multiple,alarm-simultaneous,alarm-priority,alarm-zero,alarm-negative,priority-change,priority-preempt,priority-fifo,priority-sema,priority-condvar,mlfqs-load-1,mlfqs-load-60,mlfqs-load-avg,mlfqs-recent-1,mlfqs-fair-2,mlfqs-fair-20,mlfqs-nice-2,mlfqs-nice-10,mlfqs-block
