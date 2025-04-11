@@ -93,6 +93,8 @@ struct thread
     /* KNU-COMP312 HINT (Alarm Clock):
        To implement sleeping behavior in timer_sleep() without busy waiting,
        consider adding a field here to store the thread's wake-up tick. */
+   
+    int64_t wakeup_time; // 깨어나야 할 시간 tick값
 
     /* KNU-COMP312 HINT (Advanced Scheduler – 4.4BSD MLFQ):
        You may want to add fields to store each thread's nice value and recent_cpu,
@@ -103,6 +105,7 @@ struct thread
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
+    struct list_elem sleep_elem;  /* List element for sleep_list */
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
@@ -118,11 +121,16 @@ struct thread
    Controlled by kernel command-line option "-o mlfqs". */
 extern bool thread_mlfqs;
 
+extern struct list sleep_list;
+
 void thread_init (void);
 void thread_start (void);
 
 void thread_tick (void);
 void thread_print_stats (void);
+
+
+void thread_tests_preemption (void);
 
 typedef void thread_func (void *aux);
 tid_t thread_create (const char *name, int priority, thread_func *, void *);
@@ -136,6 +144,10 @@ const char *thread_name (void);
 
 void thread_exit (void) NO_RETURN;
 void thread_yield (void);
+void thread_sleep (int); //add by me
+
+bool thread_priority_more(const struct list_elem *a, const struct list_elem *b, void *aux);
+bool compare_wakeup_time(const struct list_elem *a, const struct list_elem *b, void *aux);
 
 /* Performs some operation on thread t, given auxiliary data AUX. */
 typedef void thread_action_func (struct thread *t, void *aux);

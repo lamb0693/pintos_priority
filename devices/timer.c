@@ -104,8 +104,12 @@ timer_sleep (int64_t ticks)
      4. In your timer interrupt handler, wake up threads whose time has come.
 
      This approach allows the CPU to do useful work instead of busy-waiting. */
-  while (timer_elapsed (start) < ticks) 
-    thread_yield ();
+
+  // while (timer_elapsed (start) < ticks) 
+  //   thread_yield ();
+
+  if(timer_elapsed (start) < ticks)
+    thread_sleep(start+ticks);
 }
 
 /* Sleeps for approximately MS milliseconds.  Interrupts must be
@@ -193,6 +197,20 @@ timer_interrupt (struct intr_frame *args UNUSED)
      3. Unblock them using thread_unblock() so they can resume execution.
 
      This ensures sleeping threads are resumed at the correct time. */
+     enum intr_level old_level = intr_disable();
+
+     while (!list_empty(&sleep_list)) {
+       struct thread *t = list_entry(list_front(&sleep_list), struct thread, sleep_elem);
+       if (t->wakeup_time <= ticks) {
+         list_pop_front(&sleep_list);
+         thread_unblock(t);
+       } else {
+         break;
+       }
+     }
+     
+     intr_set_level(old_level);
+     
 
   thread_tick ();
 }
